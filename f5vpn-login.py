@@ -241,6 +241,15 @@ class Linux2Platform(Platform):
         run_as_root(['/sbin/route', action] + host_or_net +
                     ['gw', gateway_ip])
 
+class Solaris10Platform(Platform):
+    def setup_route(self, ifname, gateway_ip, net, bits, action):
+        if bits == 32:
+            host_or_net = ["-host", net]
+        else:
+            host_or_net = ["-net", net, '-netmask', bits2mask[bits]]
+        run_as_root(['/sbin/route', action] + host_or_net +
+                    [gateway_ip] + ['-ifp', ifname])
+
 class FreeBSD6Base(Platform):
     def setup_route(self, ifname, gateway_ip, net, bits, action):
         args = ['/sbin/route', action, "%s/%s" % (net, bits)]
@@ -351,6 +360,8 @@ def get_platform():
         return FreeBSD6Platform()
     elif sys.platform == "freebsd8":
         return FreeBSD6Platform()
+    elif sys.platform == "sunos5":
+        return Solaris10Platform()
     else:
         # Other Unix-like platforms aren't supported at the moment...but there's
         # no reason they can't be, when someone with such a platform tells me
@@ -1025,7 +1036,9 @@ Cookie: MRHSession=%s\r
     def ppp_ip_up(iface_name, tty, local_ip, remote_ip):
         revdns_domains = []
         for net, bits in routes_to_add:
-            platform.setup_route(iface_name, local_ip, '.'.join(map(str, net)), bits, 'add')
+            #TODO: Was it a bug?
+            #platform.setup_route(iface_name, local_ip, '.'.join(map(str, net)), bits, 'add')
+            platform.setup_route(iface_name, remote_ip, '.'.join(map(str, net)), bits, 'add')
             revdns_domains.extend(routespec_to_revdns(net, bits))
 
         # sending a packet to the "local" ip appears to actually send data
