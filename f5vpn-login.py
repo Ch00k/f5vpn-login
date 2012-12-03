@@ -345,7 +345,7 @@ class Linux2ResolvconfPlatform(ResolvConfHelperDNSMixin, Linux2Platform):
 class FreeBSD6Platform(ManualFrobbingDNSMixin, FreeBSD6Base):
     pass
 
-class Solaris10ManualPlatform(ManualFrobbingDNSMixin, Solaris10Platform)
+class Solaris10ManualPlatform(ManualFrobbingDNSMixin, Solaris10Platform):
     pass
 
 def get_platform():
