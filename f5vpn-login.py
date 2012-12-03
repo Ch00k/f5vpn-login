@@ -345,6 +345,9 @@ class Linux2ResolvconfPlatform(ResolvConfHelperDNSMixin, Linux2Platform):
 class FreeBSD6Platform(ManualFrobbingDNSMixin, FreeBSD6Base):
     pass
 
+class Solaris10ManualPlatform(ManualFrobbingDNSMixin, Solaris10Platform)
+    pass
+
 def get_platform():
     if sys.platform == "darwin":
         return DarwinPlatform()
@@ -361,7 +364,7 @@ def get_platform():
     elif sys.platform == "freebsd8":
         return FreeBSD6Platform()
     elif sys.platform == "sunos5":
-        return Solaris10Platform()
+        return Solaris10ManualPlatform()
     else:
         # Other Unix-like platforms aren't supported at the moment...but there's
         # no reason they can't be, when someone with such a platform tells me
