@@ -466,7 +466,7 @@ def find_certificates_file():
         ssl_cert_path = OSX_get_a_certificate()
 
     # Solaris does not seem to have the ca-bundle.crt.
-    if not ssl_cert_path and sys.platform != 'sunos5':
+    if not ssl_cert_path and sys.platform != "sunos5":
         sys.stderr.write("Warning: server certificate checking disabled, couldn't locate the certificates file.\n")
         sys.stderr.write("         Do you know where it is on your OS? Lemme know...\n")
 
